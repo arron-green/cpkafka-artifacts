@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -x
+source $SDKMAN_DIR/bin/sdkman-init.sh
+
+cd "$HOME" && (curl -L https://github.com/confluentinc/kafka/archive/${PKG_KAFKA_VER}.tar.gz | tar -zx)
+
+cd "$HOME/kafka-${PKG_KAFKA_VER}"
+GRADLE_OPTS=-Xmx2048m gradle install installAll

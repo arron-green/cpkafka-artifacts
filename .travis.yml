@@ -1,0 +1,10 @@
+sudo: required
+services:
+  - docker
+
+cache:
+  directories:
+    - "/home/travis/.m2"
+
+script:
+  - ./build

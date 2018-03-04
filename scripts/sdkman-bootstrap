@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -x
+
+apt-get -y update
+apt-get -y install git curl zip unzip tar
+curl -s "https://get.sdkman.io" | bash
+echo "sdkman_auto_answer=true" > $SDKMAN_DIR/etc/config
+echo "sdkman_auto_selfupdate=false" >> $SDKMAN_DIR/etc/config
+echo "sdkman_insecure_ssl=false" >> $SDKMAN_DIR/etc/config

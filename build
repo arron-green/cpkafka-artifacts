@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+GITSHA=$(git rev-parse HEAD)
+DOCKER_TAG=kafka-avro-schema-registry-artifacts:${GITSHA}
+
+JAVA_VER=8u152-zulu
+SCALA_VER=2.11.8
+GROOVY_VER=2.4.12
+GRADLE_VER=4.5
+MVN_VER=3.5.2
+PKG_CONFLUENT_VER=4.1.x
+PKG_KAFKA_VER=1.1
+AVRO_VER=1.8.2
+KAFKA_REV=1.1
+CP_REV=4.1.x
+
+docker build \
+    --build-arg JAVA_VER="${JAVA_VER}" \
+    --build-arg SCALA_VER="${SCALA_VER}" \
+    --build-arg GROOVY_VER="${GROOVY_VER}" \
+    --build-arg GRADLE_VER="${GRADLE_VER}" \
+    --build-arg MVN_VER="${MVN_VER}" \
+    --build-arg PKG_CONFLUENT_VER="${PKG_CONFLUENT_VER}" \
+    --build-arg PKG_KAFKA_VER="${PKG_KAFKA_VER}" \
+    --build-arg AVRO_VER="${AVRO_VER}" \
+    --build-arg PKG_KAFKA_VER="${KAFKA_REV}" \
+    --build-arg PKG_CONFLUENT_VER="${CP_REV}" \
+    -t $DOCKER_TAG .
+
+# copy build artifacts from container to host
+docker run --rm -iv${PWD}/build-artifacts:/build-artifacts $DOCKER_TAG sh -s <<EOF
+cd /home/kafkabldr
+cp -R .m2/repository m2-repo
+chown -R -v $(id -u):$(id -g) m2-repo
+tar -czf m2-artifact-repo.tgz m2-repo
+chown -R -v $(id -u):$(id -g) m2-artifact-repo.tgz /home/kafkabldr/pkg-schema-registry-${CP_REV}.tgz
+cp -va *.tgz /build-artifacts
+EOF
+
