@@ -30,7 +30,7 @@ docker build \
 
 ARTIFACTS_USER=$(stat -c "%u:%g" ./build-artifacts)
 # copy build artifacts from container to host
-docker run --rm -iv${PWD}/build-artifacts:/build-artifacts $DOCKER_TAG sh -s <<EOF
+docker run --rm -iv${PWD}/build-artifacts:/build-artifacts --user="root" $DOCKER_TAG sh -s <<EOF
 cd /home/kafkabldr
 chown -R $ARTIFACTS_USER /build-artifacts
 tar -czf /home/kafkabldr/m2-artifact-repo.tgz /home/kafkabldr/.m2
