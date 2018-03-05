@@ -30,9 +30,10 @@ docker build \
 
 ARTIFACTS_USER=$(stat -c "%u:%g" ./build-artifacts)
 # copy build artifacts from container to host
-docker run --rm -iv${PWD}/build-artifacts:/build-artifacts -u $ARTIFACTS_USER $DOCKER_TAG sh -s <<EOF
+docker run --rm -iv${PWD}/build-artifacts:/build-artifacts $DOCKER_TAG sh -s <<EOF
 cd /home/kafkabldr
-tar -czf m2-artifact-repo.tgz /home/kafkabldr/.m2 >/dev/null 2>&1
-# chown -R $(id -u):$(id -g) common-package*.tgz m2-artifact-repo.tgz pkg-kafka-serde-tools*.tgz pkg-schema-registry*.tgz rest-utils-package*.tgz
+chown -R $ARTIFACTS_USER /build-artifacts
+tar -czf /home/kafkabldr/m2-artifact-repo.tgz /home/kafkabldr/.m2
+chown -R $ARTIFACTS_USER common-package*.tgz m2-artifact-repo.tgz pkg-kafka-serde-tools*.tgz pkg-schema-registry*.tgz rest-utils-package*.tgz
 cp -va common-package*.tgz m2-artifact-repo.tgz pkg-kafka-serde-tools*.tgz pkg-schema-registry*.tgz rest-utils-package*.tgz /build-artifacts
 EOF
