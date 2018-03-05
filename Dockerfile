@@ -15,6 +15,7 @@ RUN ./sdkman-env
 
 RUN useradd -c 'kafka builder' -m -d /home/kafkabldr -s /bin/bash kafkabldr
 RUN usermod -aG sudo kafkabldr
+RUN echo "if [ -e /build-artifacts ]; then sudo chown kafkabldr /build-artifacts; fi" >> /home/kafkabldr/.bashrc
 USER kafkabldr
 # ENV HOME /home/kafkabldr
 

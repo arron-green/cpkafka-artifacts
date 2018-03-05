@@ -8,6 +8,7 @@ services:
 env:
   global:
     - MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.defaultLogLevel=WARN"
+    - GRADLE_OPTS: "-Dorg.gradle.logging.level=warn"
     - ENCRYPTION_LABEL: "a341e0c086e0"
     - COMMIT_AUTHOR_EMAIL: "arrong@gmail.com"
 cache:
