@@ -24,6 +24,8 @@ docker build \
     --build-arg AVRO_VER="${AVRO_VER}" \
     --build-arg PKG_KAFKA_VER="${KAFKA_REV}" \
     --build-arg PKG_CONFLUENT_VER="${CP_REV}" \
+    --build-arg MAVEN_OPTS="${MAVEN_OPTS}" \
+    --build-arg GRADLE_OPTS="${GRADLE_OPTS}" \
     -t $DOCKER_TAG .
 
 # copy build artifacts from container to host

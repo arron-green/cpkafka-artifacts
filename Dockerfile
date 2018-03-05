@@ -4,6 +4,8 @@ ENV SDKMAN_DIR /usr/local/sdkman
 COPY ./scripts/sdkman-bootstrap ./sdkman-bootstrap
 RUN ./sdkman-bootstrap
 
+ARG MAVEN_OPTS=
+ARG GRADLE_OPTS=
 ARG JAVA_VER=8u152-zulu
 ARG SCALA_VER=2.11.8
 ARG GROOVY_VER=2.4.12
