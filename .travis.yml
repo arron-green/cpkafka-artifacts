@@ -1,10 +1,20 @@
 sudo: required
+
+language: generic
+
 services:
   - docker
 
+env:
+  global:
+    - ENCRYPTION_LABEL: "a341e0c086e0"
+    - COMMIT_AUTHOR_EMAIL: "arrong@gmail.com"
 cache:
   directories:
-    - "/home/travis/.m2"
+    - "$TRAVIS_BUILD_DIR/build-artifacts"
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_a341e0c086e0_key -iv $encrypted_a341e0c086e0_iv -in deploykey.enc -out deploykey -d
 
 script:
-  - ./build
+  - ./deploy
