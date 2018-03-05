@@ -29,10 +29,8 @@ docker build \
 # copy build artifacts from container to host
 docker run --rm -iv${PWD}/build-artifacts:/build-artifacts $DOCKER_TAG sh -s <<EOF
 cd /home/kafkabldr
-cp -R .m2/repository m2-repo
-chown -R -v $(id -u):$(id -g) m2-repo
-tar -czf m2-artifact-repo.tgz m2-repo
-chown -R -v $(id -u):$(id -g) m2-artifact-repo.tgz /home/kafkabldr/pkg-schema-registry-${CP_REV}.tgz
-cp -va *.tgz /build-artifacts
+tar -czf m2-artifact-repo.tgz $HOME/.m2
+chown -R $(id -u):$(id -g) common-package*.tgz m2-artifact-repo.tgz pkg-kafka-serde-tools*.tgz pkg-schema-registry*.tgz rest-utils-package*.tgz
+cp -va common-package*.tgz m2-artifact-repo.tgz pkg-kafka-serde-tools*.tgz pkg-schema-registry*.tgz rest-utils-package*.tgz /build-artifacts
 EOF
 
