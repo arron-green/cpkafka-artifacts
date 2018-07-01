@@ -9,15 +9,24 @@ env:
   global:
     - MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.defaultLogLevel=WARN"
     - GRADLE_OPTS: "-Dorg.gradle.logging.level=warn"
-    - ENCRYPTION_LABEL: "a341e0c086e0"
-    - COMMIT_AUTHOR_EMAIL: "arrong@gmail.com"
+    - PKG_CONFLUENT_VER: 5.0.0-beta
+    - PKG_KAFKA_VER: 5.0.0-beta
+
 cache:
   directories:
-    - "$TRAVIS_BUILD_DIR/build-artifacts"
+    - "${TRAVIS_BUILD_DIR}/build-artifacts"
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_a341e0c086e0_key -iv $encrypted_a341e0c086e0_iv -in deploykey.enc -out deploykey -d
-  - echo $DOCKER_PASSWORD | docker login --username $DOCKER_LOGIN --password-stdin
+  - echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_LOGIN} --password-stdin
 
 script:
-  - ./deploy
+  - "./build"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: IFhbmnK76lNZtlKJZaxxocleFpiyaWoa0OCrpFZdOSCwnzbbMZyV+dPGWwYXhrN5W8MnHubKwwUgPJhwjM31tOhk8FRn9spAIW+cLwBKT3l2JKpo0YxczHTRnnfWtiwtPREG87000oLe39kQ74LYG+ShnsE0yhlIQw0P+pz+Uei0anIaMLD5JOP3VCWRxMVpIhI6CuQl6VLgmnvf+BoiszDMDqwkYxyXWz1Z4Zi01Fw3ggWXOYfGJyElgBDimRdHw1RJDJc6tcEXS7f7YXIQnA9SQUD4o9I9sDx1vPIweIRxrH464udNZ7C5poNc0Aer+iGOsO2K0TfvqA7Ghg9W3AhqTvnCgddhgie4fUlBOxnyRR35qKkUbGQhy8/MMyBiHkc/xqLj6iN9KEYv89aD8jzLkYyTjXDt66vS+0AtizAQRFkoer/52LmxW279Ia2YS3UflCGCViLT0m2TU79R29pteoM/aSjCIcC75iZzv11+fV3owyE8g7n8Fouog4xR1Hvj6c90mM07xviOPhxNMezqKNAR5BQz1jBEWl9LC1CeLrfxNpHcz17h9r44Yl3OjOfIAaxsD/2NYpyXKLhlf/VNfS4t2BvWK+mNNC2eWE9icrC0WspLPzW6X3YMp/sYgyzhfBvSZqyocanxJeDwDAqQmfUwPPSDs6/scVKXWIU=
+  file:
+    - build-artifacts/m2-artifact-repo.tgz
+  on:
+    repo: arron-green/cpkafka-schema-registry-artifact-bldr

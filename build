@@ -2,16 +2,16 @@
 GITSHA=$(git rev-parse HEAD)
 DOCKER_TAG=arrongreen/cpkafka-schema-registry-artifact-bldr:${GITSHA}
 
-JAVA_VER=8.0.171-oracle
-SCALA_VER=2.11.8
-GROOVY_VER=2.4.12
-GRADLE_VER=4.5
-MAVEN_VER=3.5.2
-PKG_CONFLUENT_VER=5.0.0-beta
-PKG_KAFKA_VER=5.0.0-beta
-AVRO_VER=1.8.2
-KAFKA_REV=5.0.0-beta
-CP_REV=5.0.0-beta
+PKG_CONFLUENT_VER=${PKG_CONFLUENT_VER-5.0.0-beta}
+PKG_KAFKA_VER=${PKG_KAFKA_VER-5.0.0-beta}
+
+JAVA_VER=${JAVA_VER-8.0.171-oracle}
+SCALA_VER=${SCALA_VER-2.11.8}
+GROOVY_VER=${GROOVY_VER-2.4.12}
+GRADLE_VER=${GRADLE_VER-4.5}
+MAVEN_VER=${MAVEN_VER-3.5.2}
+AVRO_VER=${AVRO_VER-1.8.2}
+DOCKER_BUILD_USER=kafkabldr
 
 docker build \
     --build-arg JAVA_VER="${JAVA_VER}" \
@@ -22,8 +22,6 @@ docker build \
     --build-arg PKG_CONFLUENT_VER="${PKG_CONFLUENT_VER}" \
     --build-arg PKG_KAFKA_VER="${PKG_KAFKA_VER}" \
     --build-arg AVRO_VER="${AVRO_VER}" \
-    --build-arg PKG_KAFKA_VER="${KAFKA_REV}" \
-    --build-arg PKG_CONFLUENT_VER="${CP_REV}" \
     --build-arg MAVEN_OPTS="${MAVEN_OPTS}" \
     --build-arg GRADLE_OPTS="${GRADLE_OPTS}" \
     -t $DOCKER_TAG .
@@ -34,23 +32,19 @@ case "$(uname -s)" in
 esac
 
 # copy build artifacts from container to host
-docker run --rm -iv${PWD}/build-artifacts:/build-artifacts --user="root" $DOCKER_TAG sh -s <<EOF
-cd /home/kafkabldr
-chown -R $ARTIFACTS_USER /build-artifacts
-tar -czf /home/kafkabldr/m2-artifact-repo.tgz /home/kafkabldr/.m2
-chown -R $ARTIFACTS_USER \
-    ksql-package*.tgz \
-    common-package*.tgz \
-    m2-artifact-repo.tgz \
-    pkg-kafka-serde-tools*.tgz \
-    pkg-schema-registry*.tgz \
-    rest-utils-package*.tgz
-cp -va \
-    ksql-package*.tgz \
-    common-package*.tgz \
-    m2-artifact-repo.tgz \
-    pkg-kafka-serde-tools*.tgz \
-    pkg-schema-registry*.tgz \
-    rest-utils-package*.tgz \
-    /build-artifacts
+docker run --rm -iv${PWD}/build-artifacts:/build-artifacts --user="root" $DOCKER_TAG bash -s <<EOF
+cd /home/${DOCKER_BUILD_USER}
+chown -R ${ARTIFACTS_USER} /build-artifacts
+tar -czf /home/${DOCKER_BUILD_USER}/m2-artifact-repo.tgz /home/${DOCKER_BUILD_USER}/.m2
+PACKAGES=()
+PACKAGES+=(m2-artifact-repo.tgz)
+PACKAGES+=(ksql-package-${PKG_CONFLUENT_VER}.tgz)
+PACKAGES+=(common-package-${PKG_CONFLUENT_VER}.tgz)
+PACKAGES+=(pkg-kafka-serde-tools-${PKG_CONFLUENT_VER}.tgz)
+PACKAGES+=(pkg-schema-registry-${PKG_CONFLUENT_VER}.tgz)
+PACKAGES+=(rest-utils-package-${PKG_CONFLUENT_VER}.tgz)
+for PKG in \${PACKAGES[@]}; do
+    chown -R "${ARTIFACTS_USER}" "\${PKG}"
+    cp -va "\${PKG}" /build-artifacts
+done
 EOF
