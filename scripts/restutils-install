@@ -5,6 +5,7 @@ PKG_NAME=rest-utils
 cd "$HOME" && (curl -L https://github.com/confluentinc/${PKG_NAME}/archive/${PKG_CONFLUENT_VER}.tar.gz | tar -zx)
 
 cd "$HOME/${PKG_NAME}-${PKG_CONFLUENT_VER}"
-mvn -Dmaven.test.skip=$MAVEN_SKIP_TESTS clean package install
-
+BUILD_OPTS="-Dkafka.scala.version=$SCALA_VER -Dmaven.test.skip=$MAVEN_SKIP_TESTS"
+mvn $BUILD_OPTS clean install
+mvn $BUILD_OPTS package
 tar -czvf ${HOME}/pkg-${PKG_NAME}.tgz *
