@@ -6,7 +6,7 @@ RUN ./sdkman-bootstrap
 
 ARG MAVEN_OPTS=
 ARG GRADLE_OPTS=
-ARG JAVA_VER=8u152-zulu
+ARG JAVA_VER=8.0.172-zulu
 ARG SCALA_VER=2.11.8
 ARG GROOVY_VER=2.4.12
 ARG GRADLE_VER=4.5
@@ -21,8 +21,8 @@ RUN echo "if [ -e /build-artifacts ]; then sudo chown kafkabldr /build-artifacts
 USER kafkabldr
 # ENV HOME /home/kafkabldr
 
-ARG PKG_CONFLUENT_VER=4.1.x
-ARG PKG_KAFKA_VER=1.1
+ARG PKG_CONFLUENT_VER=5.0.0-beta
+ARG PKG_KAFKA_VER=5.0.0-beta
 ARG AVRO_VER=1.8.2
 ARG MVN_SKIP_TESTS=true
 
@@ -42,4 +42,6 @@ RUN ./restutils-install
 COPY ./scripts/schema-registry-install ./schema-registry-install
 RUN ./schema-registry-install
 
-RUN find $HOME/.m2
+# install ksql from source
+COPY ./scripts/ksql-install ./ksql-install
+RUN ./ksql-install

@@ -2,8 +2,13 @@
 set -x
 source $SDKMAN_DIR/bin/sdkman-init.sh
 
-sdk install java $JAVA_VER && sdk default java $JAVA_VER
-sdk install scala $SCALA_VER && sdk default scala $SCALA_VER
-sdk install groovy $GROOVY_VER && sdk default groovy $GROOVY_VER
-sdk install gradle $GRADLE_VER && sdk default gradle $GRADLE_VER
-sdk install maven $MVN_VER && sdk default maven $MVN_VER
+sdk install java $JAVA_VER
+sdk default java $JAVA_VER
+# sdk install scala $SCALA_VER
+# sdk default scala $SCALA_VER
+# sdk install groovy $GROOVY_VER
+# sdk default groovy $GROOVY_VER
+sdk install gradle $GRADLE_VER
+sdk default gradle $GRADLE_VER
+sdk install maven $MVN_VER
+sdk default maven $MVN_VER

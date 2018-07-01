@@ -2,16 +2,16 @@
 GITSHA=$(git rev-parse HEAD)
 DOCKER_TAG=arrongreen/cpkafka-schema-registry-artifact-bldr:${GITSHA}
 
-JAVA_VER=8u152-zulu
+JAVA_VER=8.0.171-oracle
 SCALA_VER=2.11.8
 GROOVY_VER=2.4.12
 GRADLE_VER=4.5
 MVN_VER=3.5.2
-PKG_CONFLUENT_VER=4.1.x
-PKG_KAFKA_VER=1.1
+PKG_CONFLUENT_VER=5.0.0-beta
+PKG_KAFKA_VER=5.0.0-beta
 AVRO_VER=1.8.2
-KAFKA_REV=1.1
-CP_REV=4.1.x
+KAFKA_REV=5.0.0-beta
+CP_REV=5.0.0-beta
 
 docker build \
     --build-arg JAVA_VER="${JAVA_VER}" \
@@ -28,12 +28,29 @@ docker build \
     --build-arg GRADLE_OPTS="${GRADLE_OPTS}" \
     -t $DOCKER_TAG .
 
-ARTIFACTS_USER=$(stat -c "%u:%g" ./build-artifacts)
+case "$(uname -s)" in
+    Darwin*)    ARTIFACTS_USER=$(stat -f "%u:%g" ./build-artifacts);;
+    *)          ARTIFACTS_USER=$(stat -c "%u:%g" ./build-artifacts);;
+esac
+
 # copy build artifacts from container to host
 docker run --rm -iv${PWD}/build-artifacts:/build-artifacts --user="root" $DOCKER_TAG sh -s <<EOF
 cd /home/kafkabldr
 chown -R $ARTIFACTS_USER /build-artifacts
 tar -czf /home/kafkabldr/m2-artifact-repo.tgz /home/kafkabldr/.m2
-chown -R $ARTIFACTS_USER common-package*.tgz m2-artifact-repo.tgz pkg-kafka-serde-tools*.tgz pkg-schema-registry*.tgz rest-utils-package*.tgz
-cp -va common-package*.tgz m2-artifact-repo.tgz pkg-kafka-serde-tools*.tgz pkg-schema-registry*.tgz rest-utils-package*.tgz /build-artifacts
+chown -R $ARTIFACTS_USER \
+    ksql-package*.tgz \
+    common-package*.tgz \
+    m2-artifact-repo.tgz \
+    pkg-kafka-serde-tools*.tgz \
+    pkg-schema-registry*.tgz \
+    rest-utils-package*.tgz
+cp -va \
+    ksql-package*.tgz \
+    common-package*.tgz \
+    m2-artifact-repo.tgz \
+    pkg-kafka-serde-tools*.tgz \
+    pkg-schema-registry*.tgz \
+    rest-utils-package*.tgz \
+    /build-artifacts
 EOF
