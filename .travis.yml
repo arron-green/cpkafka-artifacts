@@ -38,7 +38,7 @@ before_deploy:
   - git config --global user.name "Travis CI"
   - export GIT_DEPLOY_TAG="v${PKG_CONFLUENT_VER}"
   - git push origin :refs/tags/$GIT_DEPLOY_TAG || echo "remote tag doesnt exist"
-  - git tag -fa "${GIT_DEPLOY_TAG}"
+  - git tag -fa -m "Release ${PKG_CONFLUENT_VER}" "${GIT_DEPLOY_TAG}"
   - git push --tags
 
 branches:
