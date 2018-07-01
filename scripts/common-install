@@ -5,7 +5,7 @@ source $SDKMAN_DIR/bin/sdkman-init.sh
 cd "$HOME" && (curl -L https://github.com/confluentinc/common/archive/${PKG_CONFLUENT_VER}.tar.gz | tar -zx)
 
 cd "$HOME/common-${PKG_CONFLUENT_VER}"
-mvn -Dmaven.test.skip=$MVN_SKIP_TESTS clean package install
+mvn -Dmaven.test.skip=$MAVEN_SKIP_TESTS clean package install
 
 # package common
 cd package/target

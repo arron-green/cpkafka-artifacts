@@ -2,13 +2,9 @@
 set -x
 source $SDKMAN_DIR/bin/sdkman-init.sh
 
-sdk install java $JAVA_VER
-sdk default java $JAVA_VER
-# sdk install scala $SCALA_VER
-# sdk default scala $SCALA_VER
-# sdk install groovy $GROOVY_VER
-# sdk default groovy $GROOVY_VER
-sdk install gradle $GRADLE_VER
-sdk default gradle $GRADLE_VER
-sdk install maven $MVN_VER
-sdk default maven $MVN_VER
+for PKG in java gradle maven; do
+    PKG_VER_ENV_KEY=$(printf "%s_VER" "$(echo $PKG | tr a-z A-Z)")
+    PKG_VER="$(printenv "${PKG_VER_ENV_KEY}")"
+    echo "installing sdk '${PKG}' with version '${PKG_VER}'"
+    sdk install "${PKG}" "${PKG_VER}"
+done

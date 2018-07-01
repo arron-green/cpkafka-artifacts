@@ -10,7 +10,7 @@ ARG JAVA_VER=8.0.172-zulu
 ARG SCALA_VER=2.11.8
 ARG GROOVY_VER=2.4.12
 ARG GRADLE_VER=4.5
-ARG MVN_VER=3.5.2
+ARG MAVEN_VER=3.5.2
 
 COPY ./scripts/sdkman-env ./sdkman-env
 RUN ./sdkman-env
@@ -24,7 +24,7 @@ USER kafkabldr
 ARG PKG_CONFLUENT_VER=5.0.0-beta
 ARG PKG_KAFKA_VER=5.0.0-beta
 ARG AVRO_VER=1.8.2
-ARG MVN_SKIP_TESTS=true
+ARG MAVEN_SKIP_TESTS=true
 
 # install kafka from source
 COPY ./scripts/kafka-install ./kafka-install

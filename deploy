@@ -28,7 +28,8 @@ git add -f build-artifacts
 git diff --exit-code --cached && (echo "No changes to the spec on this push; exiting."; exit 0)
 
 git commit -m "BUILD: ${SHA}" build-artifacts
-git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
+git checkout ${TARGET_BRANCH} \
+    || (echo "checking out orphan branch ${TARGET_BRANCH}"; git checkout --orphan ${TARGET_BRANCH} || (echo "failed to checkout orphan branch"; exit 1))
 
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc
 ENCRYPTED_KEY_VAR="encrypted_${ENCRYPTION_LABEL}_key"

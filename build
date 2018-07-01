@@ -6,7 +6,7 @@ JAVA_VER=8.0.171-oracle
 SCALA_VER=2.11.8
 GROOVY_VER=2.4.12
 GRADLE_VER=4.5
-MVN_VER=3.5.2
+MAVEN_VER=3.5.2
 PKG_CONFLUENT_VER=5.0.0-beta
 PKG_KAFKA_VER=5.0.0-beta
 AVRO_VER=1.8.2
@@ -18,7 +18,7 @@ docker build \
     --build-arg SCALA_VER="${SCALA_VER}" \
     --build-arg GROOVY_VER="${GROOVY_VER}" \
     --build-arg GRADLE_VER="${GRADLE_VER}" \
-    --build-arg MVN_VER="${MVN_VER}" \
+    --build-arg MAVEN_VER="${MAVEN_VER}" \
     --build-arg PKG_CONFLUENT_VER="${PKG_CONFLUENT_VER}" \
     --build-arg PKG_KAFKA_VER="${PKG_KAFKA_VER}" \
     --build-arg AVRO_VER="${AVRO_VER}" \
