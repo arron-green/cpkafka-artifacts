@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 set -x
 source $SDKMAN_DIR/bin/sdkman-init.sh
+PKG_NAME=rest-utils
+cd "$HOME" && (curl -L https://github.com/confluentinc/${PKG_NAME}/archive/${PKG_CONFLUENT_VER}.tar.gz | tar -zx)
 
-cd "$HOME" && (curl -L https://github.com/confluentinc/rest-utils/archive/${PKG_CONFLUENT_VER}.tar.gz | tar -zx)
-
-cd "$HOME/rest-utils-${PKG_CONFLUENT_VER}"
+cd "$HOME/${PKG_NAME}-${PKG_CONFLUENT_VER}"
 mvn -Dmaven.test.skip=$MAVEN_SKIP_TESTS clean package install
 
-# package kafka-serde-tools
-cd package/target
-tar -czvf $HOME/rest-utils-package-${PKG_CONFLUENT_VER}.tgz \
-    rest-utils-*
-
+tar -czvf ${HOME}/pkg-${PKG_NAME}.tgz *

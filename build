@@ -2,15 +2,16 @@
 GITSHA=$(git rev-parse HEAD)
 DOCKER_TAG=arrongreen/cpkafka-schema-registry-artifact-bldr:${GITSHA}
 
-PKG_CONFLUENT_VER=${PKG_CONFLUENT_VER-5.0.0-beta}
 PKG_KAFKA_VER=${PKG_KAFKA_VER-5.0.0-beta}
+PKG_CONFLUENT_VER=${PKG_CONFLUENT_VER-5.0.x}
 
 JAVA_VER=${JAVA_VER-8.0.171-oracle}
-SCALA_VER=${SCALA_VER-2.11.8}
+SCALA_VER=${SCALA_VER-2.11}
 GROOVY_VER=${GROOVY_VER-2.4.12}
 GRADLE_VER=${GRADLE_VER-4.5}
 MAVEN_VER=${MAVEN_VER-3.5.2}
 AVRO_VER=${AVRO_VER-1.8.2}
+GRADLE_OPTS=${GRADLE_OPTS--Xmx2048m}
 DOCKER_BUILD_USER=kafkabldr
 
 docker build \
@@ -36,17 +37,6 @@ docker run --rm -iv${PWD}/build-artifacts:/build-artifacts --user="root" $DOCKER
 cd /home/${DOCKER_BUILD_USER}
 chown -R ${ARTIFACTS_USER} /build-artifacts
 tar -czf /home/${DOCKER_BUILD_USER}/m2-artifact-repo.tgz /home/${DOCKER_BUILD_USER}/.m2
-
-PACKAGES=()
-PACKAGES+=(m2-artifact-repo.tgz)
-PACKAGES+=(ksql-package-${PKG_CONFLUENT_VER}.tgz)
-PACKAGES+=(common-package-${PKG_CONFLUENT_VER}.tgz)
-PACKAGES+=(pkg-kafka-serde-tools-${PKG_CONFLUENT_VER}.tgz)
-PACKAGES+=(pkg-schema-registry-${PKG_CONFLUENT_VER}.tgz)
-PACKAGES+=(rest-utils-package-${PKG_CONFLUENT_VER}.tgz)
-
-for PKG in \${PACKAGES[@]}; do
-    chown -R "${ARTIFACTS_USER}" "\${PKG}"
-    cp -va "\${PKG}" /build-artifacts
-done
+chown -R "${ARTIFACTS_USER}" *.tgz
+mv *.tgz /build-artifacts
 EOF

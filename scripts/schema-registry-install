@@ -1,17 +1,10 @@
 #!/usr/bin/env bash
 set -x
 source $SDKMAN_DIR/bin/sdkman-init.sh
+PKG_NAME=schema-registry
+cd "$HOME" && (curl -L https://github.com/confluentinc/${PKG_NAME}/archive/${PKG_CONFLUENT_VER}.tar.gz | tar -zx)
 
-cd "$HOME" && (curl -L https://github.com/confluentinc/schema-registry/archive/${PKG_CONFLUENT_VER}.tar.gz | tar -zx)
-
-cd "$HOME/schema-registry-${PKG_CONFLUENT_VER}"
+cd "$HOME/${PKG_NAME}-${PKG_CONFLUENT_VER}"
 mvn -Davro.version=$AVRO_VER -Dmaven.test.skip=$MAVEN_SKIP_TESTS clean package install
 
-# package kafka-serde-tools
-tar -czvf ${HOME}/pkg-kafka-serde-tools-${PKG_CONFLUENT_VER}.tgz \
-    ./package-kafka-serde-tools/target/kafka-serde-tools-*
-
-# package schema-registry
-tar -czvf ${HOME}/pkg-schema-registry-${PKG_CONFLUENT_VER}.tgz \
-    ./package-schema-registry/target/kafka-schema-registry-*
-
+tar -czvf ${HOME}/pkg-${PKG_NAME}.tgz *

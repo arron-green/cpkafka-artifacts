@@ -21,8 +21,8 @@ RUN echo "if [ -e /build-artifacts ]; then sudo chown kafkabldr /build-artifacts
 USER kafkabldr
 # ENV HOME /home/kafkabldr
 
-ARG PKG_CONFLUENT_VER=5.0.0-beta
 ARG PKG_KAFKA_VER=5.0.0-beta
+ARG PKG_CONFLUENT_VER=5.0.x
 ARG AVRO_VER=1.8.2
 ARG MAVEN_SKIP_TESTS=true
 
