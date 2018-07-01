@@ -28,5 +28,7 @@ deploy:
     secure: IFhbmnK76lNZtlKJZaxxocleFpiyaWoa0OCrpFZdOSCwnzbbMZyV+dPGWwYXhrN5W8MnHubKwwUgPJhwjM31tOhk8FRn9spAIW+cLwBKT3l2JKpo0YxczHTRnnfWtiwtPREG87000oLe39kQ74LYG+ShnsE0yhlIQw0P+pz+Uei0anIaMLD5JOP3VCWRxMVpIhI6CuQl6VLgmnvf+BoiszDMDqwkYxyXWz1Z4Zi01Fw3ggWXOYfGJyElgBDimRdHw1RJDJc6tcEXS7f7YXIQnA9SQUD4o9I9sDx1vPIweIRxrH464udNZ7C5poNc0Aer+iGOsO2K0TfvqA7Ghg9W3AhqTvnCgddhgie4fUlBOxnyRR35qKkUbGQhy8/MMyBiHkc/xqLj6iN9KEYv89aD8jzLkYyTjXDt66vS+0AtizAQRFkoer/52LmxW279Ia2YS3UflCGCViLT0m2TU79R29pteoM/aSjCIcC75iZzv11+fV3owyE8g7n8Fouog4xR1Hvj6c90mM07xviOPhxNMezqKNAR5BQz1jBEWl9LC1CeLrfxNpHcz17h9r44Yl3OjOfIAaxsD/2NYpyXKLhlf/VNfS4t2BvWK+mNNC2eWE9icrC0WspLPzW6X3YMp/sYgyzhfBvSZqyocanxJeDwDAqQmfUwPPSDs6/scVKXWIU=
   file:
     - build-artifacts/m2-artifact-repo.tgz
+  skip_cleanup: true
   on:
     repo: arron-green/cpkafka-schema-registry-artifact-bldr
+    tags: true
