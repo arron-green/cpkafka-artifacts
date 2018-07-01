@@ -31,4 +31,3 @@ deploy:
   skip_cleanup: true
   on:
     repo: arron-green/cpkafka-schema-registry-artifact-bldr
-    tags: true
