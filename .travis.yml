@@ -37,9 +37,10 @@ before_deploy:
   - git config --global user.email "${GIT_EMAIL}"
   - git config --global user.name "${GIT_NAME}"
   - export GIT_DEPLOY_TAG="v${PKG_CONFLUENT_VER}"
-  - git push origin :refs/tags/$GIT_DEPLOY_TAG || echo "remote tag doesnt exist"
+  - git remote add upstream git@github.com:arron-green/cpkafka-schema-registry-artifact-bldr.git
+  - git push upstream :refs/tags/$GIT_DEPLOY_TAG || echo "remote tag doesnt exist"
   - git tag -fa -m "Release ${PKG_CONFLUENT_VER}" "${GIT_DEPLOY_TAG}"
-  - git push --tags
+  - git push upstream --tags
 
 branches:
   except:
