@@ -45,3 +45,8 @@ RUN ./schema-registry-install
 # install ksql from source
 COPY ./scripts/ksql-install ./ksql-install
 RUN ./ksql-install
+
+# install kafka-rest from source
+COPY ./scripts/kafka-rest-install ./kafka-rest-install
+RUN ./kafka-rest-install
+

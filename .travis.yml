@@ -58,6 +58,7 @@ deploy:
     - build-artifacts/pkg-ksql.tgz
     - build-artifacts/pkg-rest-utils.tgz
     - build-artifacts/pkg-schema-registry.tgz
+    - build-artifacts/pkg-kafka-rest.tgz
     # - build-artifacts/pkg-.tgz
   skip_cleanup: true
   on:
