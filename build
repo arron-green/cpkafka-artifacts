@@ -36,6 +36,7 @@ docker run --rm -iv${PWD}/build-artifacts:/build-artifacts --user="root" $DOCKER
 cd /home/${DOCKER_BUILD_USER}
 chown -R ${ARTIFACTS_USER} /build-artifacts
 tar -czf /home/${DOCKER_BUILD_USER}/m2-artifact-repo.tgz /home/${DOCKER_BUILD_USER}/.m2
+
 PACKAGES=()
 PACKAGES+=(m2-artifact-repo.tgz)
 PACKAGES+=(ksql-package-${PKG_CONFLUENT_VER}.tgz)
@@ -43,6 +44,7 @@ PACKAGES+=(common-package-${PKG_CONFLUENT_VER}.tgz)
 PACKAGES+=(pkg-kafka-serde-tools-${PKG_CONFLUENT_VER}.tgz)
 PACKAGES+=(pkg-schema-registry-${PKG_CONFLUENT_VER}.tgz)
 PACKAGES+=(rest-utils-package-${PKG_CONFLUENT_VER}.tgz)
+
 for PKG in \${PACKAGES[@]}; do
     chown -R "${ARTIFACTS_USER}" "\${PKG}"
     cp -va "\${PKG}" /build-artifacts

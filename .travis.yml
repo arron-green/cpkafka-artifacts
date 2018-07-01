@@ -17,10 +17,33 @@ cache:
     - "${TRAVIS_BUILD_DIR}/build-artifacts"
 
 before_install:
-  - echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_LOGIN} --password-stdin
+  - |
+    declare -r SSH_FILE="$(mktemp -u $HOME/.ssh/XXXXX)"
+    openssl aes-256-cbc \
+      -K $encrypted_15f7e9cff7d3_key \
+      -iv $encrypted_15f7e9cff7d3_iv \
+      -in github_cpkafka_bld_deploy_key.enc \
+      -out ${SSH_FILE} -d
+    chmod 600 "${SSH_FILE}" \
+      && printf "%s\n" \
+        "Host github.com" \
+        "  IdentityFile ${SSH_FILE}" \
+        "  LogLevel ERROR" >> ~/.ssh/config
 
 script:
   - "./build"
+
+before_deploy:
+  - git config --global user.email "builds@travis-ci.com"
+  - git config --global user.name "Travis CI"
+  - export GIT_DEPLOY_TAG="v${PKG_CONFLUENT_VER}"
+  - git push origin :refs/tags/$GIT_DEPLOY_TAG || echo "remote tag doesnt exist"
+  - git tag -fa "${GIT_DEPLOY_TAG}"
+  - git push --tags
+
+branches:
+  except:
+    - /^*-v[0-9]/
 
 deploy:
   provider: releases
@@ -30,4 +53,6 @@ deploy:
     - build-artifacts/m2-artifact-repo.tgz
   skip_cleanup: true
   on:
-    repo: arron-green/cpkafka-schema-registry-artifact-bldr
+    tags: false
+    all_branches: true
+    # repo: arron-green/cpkafka-schema-registry-artifact-bldr
