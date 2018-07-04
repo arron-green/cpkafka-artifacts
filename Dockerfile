@@ -33,6 +33,9 @@ ARG MAVEN_SKIP_TESTS=true
 COPY ./scripts/kafka-install ./kafka-install
 RUN ./kafka-install
 
+COPY ./scripts/log4j.properties $HOME/log4j.properties
+ENV MAVEN_OPTS "${MAVEN_OPTS} -Dlog4j.configuration=file:${HOME}/log4j.properties"
+
 # install confluent-common from source
 COPY ./scripts/common-install ./common-install
 RUN ./common-install
