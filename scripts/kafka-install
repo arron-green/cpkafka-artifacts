@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-set -x
+set -ex
 source $SDKMAN_DIR/bin/sdkman-init.sh
 PKG_NAME=kafka
 cd "$HOME" && (curl -L https://github.com/confluentinc/${PKG_NAME}/archive/${PKG_KAFKA_VER}.tar.gz | tar -zx)
 
 cd "$HOME/${PKG_NAME}-${PKG_KAFKA_VER}"
-gradle -PscalaVersion=${SCALA_VER} install installAll
-gradle -PscalaVersion=${SCALA_VER} releaseTarGz -x signArchives
+gradle installAll releaseTarGz -x signArchives
 
 tar -czvf $HOME/pkg-${PKG_NAME}.tgz *

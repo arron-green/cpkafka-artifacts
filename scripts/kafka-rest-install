@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-set -x
+set -ex
 source $SDKMAN_DIR/bin/sdkman-init.sh
 PKG_NAME=kafka-rest
 cd "$HOME" && (curl -L https://github.com/confluentinc/${PKG_NAME}/archive/${PKG_CONFLUENT_VER}.tar.gz | tar -zx)
 
 cd "$HOME/${PKG_NAME}-${PKG_CONFLUENT_VER}"
-BUILD_OPTS="-Davro.version=$AVRO_VER -Dkafka.scala.version=$SCALA_VER -Dmaven.test.skip=$MAVEN_SKIP_TESTS"
+# BUILD_OPTS="-Davro.version=$AVRO_VER -Dkafka.scala.version=$SCALA_VER -Dmaven.test.skip=$MAVEN_SKIP_TESTS"
+BUILD_OPTS="-Dmaven.test.skip=$MAVEN_SKIP_TESTS"
 mvn $BUILD_OPTS clean install
-mvn $BUILD_OPTS package
+mvn $BUILD_OPTS package \
+# find . -name \*target\* \
 tar -czvf ${HOME}/pkg-${PKG_NAME}.tgz *

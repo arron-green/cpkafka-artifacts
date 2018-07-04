@@ -2,22 +2,25 @@
 GITSHA=$(git rev-parse HEAD)
 DOCKER_TAG=arrongreen/cpkafka-schema-registry-artifact-bldr:${GITSHA}
 
-PKG_KAFKA_VER=${PKG_KAFKA_VER-5.0.0-beta}
+PKG_KAFKA_VER=${PKG_KAFKA_VER-2.0}
+# PKG_KAFKA_VER=${PKG_KAFKA_VER-5.0.0-beta}
 PKG_CONFLUENT_VER=${PKG_CONFLUENT_VER-5.0.x}
 
 JAVA_VER=${JAVA_VER-8.0.171-oracle}
 SCALA_VER=${SCALA_VER-2.11}
-GROOVY_VER=${GROOVY_VER-2.4.12}
-GRADLE_VER=${GRADLE_VER-4.5}
+GRADLE_VER=${GRADLE_VER-4.8.1}
 MAVEN_VER=${MAVEN_VER-3.5.2}
 AVRO_VER=${AVRO_VER-1.8.2}
 GRADLE_OPTS=${GRADLE_OPTS--Xmx2048m}
 DOCKER_BUILD_USER=kafkabldr
 
+if [[ ! -e artifacts.tgz ]]; then
+    curl -L -o artifacts.tgz https://github.com/arron-green/cpkafka-schema-registry-artifact-bldr/releases/download/v5.0.0-beta/m2-artifact-repo.tgz
+fi
+
 docker build \
     --build-arg JAVA_VER="${JAVA_VER}" \
     --build-arg SCALA_VER="${SCALA_VER}" \
-    --build-arg GROOVY_VER="${GROOVY_VER}" \
     --build-arg GRADLE_VER="${GRADLE_VER}" \
     --build-arg MAVEN_VER="${MAVEN_VER}" \
     --build-arg PKG_CONFLUENT_VER="${PKG_CONFLUENT_VER}" \

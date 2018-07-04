@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -x
+set -ex
 source $SDKMAN_DIR/bin/sdkman-init.sh
 
 for PKG in java gradle maven; do
