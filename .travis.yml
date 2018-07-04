@@ -32,7 +32,7 @@ before_install:
 
 script:
   # TODO: may need to split each of these builds into chunks
-  - "travis_wait 30 ./build"
+  - "./build"
 
 before_deploy:
   - |
