@@ -31,7 +31,8 @@ before_install:
         "  LogLevel ERROR" >> ~/.ssh/config
 
 script:
-  - "./build"
+  # TODO: may need to split each of these builds into chunks
+  - "travis_wait 30 ./build"
 
 before_deploy:
   - |
