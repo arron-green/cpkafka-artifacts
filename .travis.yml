@@ -7,7 +7,7 @@ services:
 
 env:
   global:
-    - MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR"
+    - MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR --quiet"
     - GRADLE_OPTS: "-Dorg.gradle.logging.level=quiet"
     - PKG_KAFKA_VER: 2.0
     - PKG_CONFLUENT_VER: 5.0.x

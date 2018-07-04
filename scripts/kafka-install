@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -ex
-source $SDKMAN_DIR/bin/sdkman-init.sh
+source ${SDKMAN_DIR}/bin/sdkman-init.sh
 PKG_NAME=kafka
-cd "$HOME" && (curl -L https://github.com/confluentinc/${PKG_NAME}/archive/${PKG_KAFKA_VER}.tar.gz | tar -zx)
+cd "${HOME}" && (curl -L https://github.com/confluentinc/${PKG_NAME}/archive/${PKG_KAFKA_VER}.tar.gz | tar -zx)
 
-cd "$HOME/${PKG_NAME}-${PKG_KAFKA_VER}"
+cd "${HOME}/${PKG_NAME}-${PKG_KAFKA_VER}"
 gradle installAll releaseTarGz -x signArchives
 
-tar -czvf $HOME/pkg-${PKG_NAME}.tgz *
+tar -czf ${HOME}/pkg-${PKG_NAME}.tgz *

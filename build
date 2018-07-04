@@ -16,7 +16,7 @@ MAVEN_OPTS=${MAVEN_OPTS}
 DOCKER_BUILD_USER=kafkabldr
 
 if [[ ! -e artifacts.tgz ]]; then
-    curl -L -o artifacts.tgz https://github.com/arron-green/cpkafka-schema-registry-artifact-bldr/releases/download/v5.0.0-beta/m2-artifact-repo.tgz
+    curl -s -L -o artifacts.tgz https://github.com/arron-green/cpkafka-schema-registry-artifact-bldr/releases/download/v5.0.0-beta/m2-artifact-repo.tgz
 fi
 
 docker build \

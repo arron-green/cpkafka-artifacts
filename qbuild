@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -ex
+
+export MAVEN_OPTS="-Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR --quiet"
+export GRADLE_OPTS="-Dorg.gradle.logging.level=quiet"
+exec ./build $@
