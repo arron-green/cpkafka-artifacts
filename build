@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-GITSHA=$(git rev-parse HEAD)
-DOCKER_TAG=arrongreen/cpkafka-schema-registry-artifact-bldr:${GITSHA}
+set -ex
+DOCKER_TAG=arrongreen/cpkafka-schema-registry-artifact-bldr:latest
 
 PKG_KAFKA_VER=${PKG_KAFKA_VER-2.0}
 # PKG_KAFKA_VER=${PKG_KAFKA_VER-5.0.0-beta}
