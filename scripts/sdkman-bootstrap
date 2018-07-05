@@ -2,7 +2,7 @@
 set -ex
 
 apt-get -qq -y update
-apt-get -qq -y install git curl zip unzip tar
+apt-get -qq -y install git curl zip unzip tar jq
 (curl -s "https://get.sdkman.io" | bash) &> /dev/null
 echo "sdkman_auto_answer=true" > ${SDKMAN_DIR}/etc/config
 echo "sdkman_auto_selfupdate=false" >> ${SDKMAN_DIR}/etc/config

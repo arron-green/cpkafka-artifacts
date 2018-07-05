@@ -4,9 +4,9 @@ source ${SDKMAN_DIR}/bin/sdkman-init.sh &> /dev/null
 PKG_NAME=kafka
 cd "${HOME}" && (curl -s -L https://github.com/confluentinc/${PKG_NAME}/archive/${PKG_KAFKA_VER}.tar.gz | tar -zx)
 
-BRANCH_META=$(curl -s https://api.github.com/repos/confluentinc/${PKG_NAME}/branches/${PKG_KAFKA_VER} | jq -rc '.commit')
-COMMIT_SHA=$(echo ${BRANCH_META} | jq -rc '.sha')
-COMMIT_DATE=$(echo ${BRANCH_META} | jq -rc '.commit.committer.date')
+BRANCH_META=$(curl -s https://api.github.com/repos/confluentinc/${PKG_NAME}/branches/${PKG_KAFKA_VER} | jq -r -c '.commit')
+COMMIT_SHA=$(echo ${BRANCH_META} | jq -r -c '.sha')
+COMMIT_DATE=$(echo ${BRANCH_META} | jq -r -c '.commit.committer.date')
 
 cd "${HOME}/${PKG_NAME}-${PKG_KAFKA_VER}"
 gradle installAll releaseTarGz -x signArchives
