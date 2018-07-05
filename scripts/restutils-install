@@ -4,8 +4,12 @@ source ${SDKMAN_DIR}/bin/sdkman-init.sh &> /dev/null
 PKG_NAME=rest-utils
 cd "${HOME}" && (curl -s -L https://github.com/confluentinc/${PKG_NAME}/archive/${PKG_CONFLUENT_VER}.tar.gz | tar -zx)
 
+BRANCH_META=$(curl -s https://api.github.com/repos/confluentinc/${PKG_NAME}/branches/${PKG_CONFLUENT_VER} | jq -rc '.commit')
+COMMIT_SHA=$(echo ${BRANCH_META} | jq -rc '.sha')
+COMMIT_DATE=$(echo ${BRANCH_META} | jq -rc '.commit.committer.date')
+
 cd "${HOME}/${PKG_NAME}-${PKG_CONFLUENT_VER}"
 BUILD_OPTS="-Davro.version=${AVRO_VER} -Dmaven.test.skip=${MAVEN_SKIP_TESTS}"
 mvn ${MAVEN_OPTS} ${BUILD_OPTS} -q clean install
 mvn ${MAVEN_OPTS} ${BUILD_OPTS} -q package
-tar -czf ${HOME}/pkg-${PKG_NAME}.tgz *
+tar -czf ${HOME}/pkg-${PKG_NAME}-${COMMIT_SHA}-${COMMIT_DATE}.tgz *
