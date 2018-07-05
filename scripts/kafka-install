@@ -11,4 +11,4 @@ COMMIT_DATE=$(echo ${BRANCH_META} | jq -r -c '.commit.committer.date')
 cd "${HOME}/${PKG_NAME}-${PKG_KAFKA_VER}"
 gradle installAll releaseTarGz -x signArchives
 
-tar -czf ${HOME}/pkg-${PKG_NAME}-${COMMIT_SHA}-${COMMIT_DATE}.tgz *
+tar -czf ${HOME}/pkg-${PKG_NAME}-${COMMIT_SHA}.tgz *

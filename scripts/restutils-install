@@ -12,4 +12,4 @@ cd "${HOME}/${PKG_NAME}-${PKG_CONFLUENT_VER}"
 BUILD_OPTS="-Davro.version=${AVRO_VER} -Dmaven.test.skip=${MAVEN_SKIP_TESTS}"
 mvn ${MAVEN_OPTS} ${BUILD_OPTS} -q clean install
 mvn ${MAVEN_OPTS} ${BUILD_OPTS} -q package
-tar -czf ${HOME}/pkg-${PKG_NAME}-${COMMIT_SHA}-${COMMIT_DATE}.tgz *
+tar -czf ${HOME}/pkg-${PKG_NAME}-${COMMIT_SHA}.tgz *

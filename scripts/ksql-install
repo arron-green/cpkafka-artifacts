@@ -15,4 +15,4 @@ for MODULE in ksql-common ksql-metastore ksql-engine; do
     mvn ${MAVEN_OPTS} -q test install -pl ${MODULE} -am
 done
 mvn ${MAVEN_OPTS} ${BUILD_OPTS} -q install package
-tar -czf ${HOME}/pkg-${PKG_NAME}-${COMMIT_SHA}-${COMMIT_DATE}.tgz *
+tar -czf ${HOME}/pkg-${PKG_NAME}-${COMMIT_SHA}.tgz *
