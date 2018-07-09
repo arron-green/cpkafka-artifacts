@@ -3,7 +3,6 @@ set -ex
 DOCKER_TAG=arrongreen/cpkafka-schema-registry-artifact-bldr:latest
 
 PKG_KAFKA_VER=${PKG_KAFKA_VER-2.0}
-# PKG_KAFKA_VER=${PKG_KAFKA_VER-5.0.0-beta}
 PKG_CONFLUENT_VER=${PKG_CONFLUENT_VER-5.0.x}
 
 JAVA_VER=${JAVA_VER-8.0.171-oracle}
