@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -ex
-DOCKER_TAG=arrongreen/cpkafka-schema-registry-artifact-bldr:latest
+DOCKER_TAG=arrongreen/cpkafka-artifacts:latest
 
 PKG_KAFKA_VER=${PKG_KAFKA_VER-2.0}
 PKG_CONFLUENT_VER=${PKG_CONFLUENT_VER-5.0.x}
@@ -15,7 +15,7 @@ MAVEN_OPTS=${MAVEN_OPTS}
 DOCKER_BUILD_USER=kafkabldr
 
 if [[ ! -e artifacts.tgz ]]; then
-    curl -s -L -o artifacts.tgz https://github.com/arron-green/cpkafka-schema-registry-artifact-bldr/releases/download/v5.0.0-beta/m2-artifact-repo.tgz
+    curl -s -L -o artifacts.tgz https://github.com/arron-green/cpkafka-artifacts/releases/download/v5.0.0-beta/m2-artifact-repo.tgz
 fi
 
 docker build \
