@@ -28,6 +28,8 @@ docker build \
     --build-arg AVRO_VER="${AVRO_VER}" \
     --build-arg MAVEN_OPTS="${MAVEN_OPTS}" \
     --build-arg GRADLE_OPTS="${GRADLE_OPTS}" \
+    --build-arg GITHUB_CLIENT_ID="${GITHUB_CLIENT_ID}" \
+    --build-arg GITHUB_CLIENT_SECRET="${GITHUB_CLIENT_SECRET}" \
     -t $DOCKER_TAG .
 
 case "$(uname -s)" in

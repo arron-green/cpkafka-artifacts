@@ -28,6 +28,8 @@ ARG PKG_KAFKA_VER=
 ARG PKG_CONFLUENT_VER=
 ARG AVRO_VER=1.8.2
 ARG MAVEN_SKIP_TESTS=true
+ARG GITHUB_CLIENT_ID=
+ARG GITHUB_CLIENT_SECRET=
 
 # install kafka from source
 COPY ./scripts/kafka-install ./kafka-install
