@@ -1,6 +1,6 @@
 # Confluent Kafka artifact builder
 
-[![Build Status](https://travis-ci.org/arron-green/cpkafka-schema-registry-artifact-bldr.svg?branch=master)](https://travis-ci.org/arron-green/cpkafka-schema-registry-artifact-bldr)
+[![Build Status](https://travis-ci.org/arron-green/cpkafka-artifacts.svg?branch=master)](https://travis-ci.org/arron-green/cpkafka-artifacts)
 
 This was created due to the complicated and time consuming steps that it takes to
 build confluent kafka and it's related artifacts from source
