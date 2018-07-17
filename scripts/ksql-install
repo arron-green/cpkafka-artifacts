@@ -9,7 +9,7 @@ BRANCH_META=$(curl -s "https://api.github.com/repos/confluentinc/${PKG_NAME}/bra
 COMMIT_SHA=$(echo ${BRANCH_META} | jq -r -c '.sha')
 COMMIT_DATE=$(echo ${BRANCH_META} | jq -r -c '.commit.committer.date')
 
-cd "${HOME}/${PKG_NAME}-${PKG_CONFLUENT_VER}"
+cd "${HOME}/${PKG_NAME}-${PKG_CONFLUENT_VER#v*}"
 BUILD_OPTS="-Davro.version=${AVRO_VER} -Dmaven.test.skip=${MAVEN_SKIP_TESTS}"
 mvn clean
 for MODULE in ksql-common ksql-metastore ksql-engine; do

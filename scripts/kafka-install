@@ -9,7 +9,7 @@ BRANCH_META=$(curl -s "https://api.github.com/repos/confluentinc/${PKG_NAME}/bra
 COMMIT_SHA=$(echo ${BRANCH_META} | jq -r -c '.sha')
 COMMIT_DATE=$(echo ${BRANCH_META} | jq -r -c '.commit.committer.date')
 
-cd "${HOME}/${PKG_NAME}-${PKG_KAFKA_VER}"
+cd "${HOME}/${PKG_NAME}-${PKG_KAFKA_VER#v*}"
 gradle installAll releaseTarGz -x signArchives
 
 tar -czf ${HOME}/pkg-${PKG_NAME}-${COMMIT_SHA}.tgz *
