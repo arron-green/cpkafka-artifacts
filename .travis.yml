@@ -41,16 +41,21 @@ before_deploy:
   - |
     git config --global user.email "${GIT_EMAIL}"
     git config --global user.name "${GIT_NAME}"
-    export GIT_DEPLOY_TAG="v${PKG_CONFLUENT_VER#v*}-${TRAVIS_BUILD_NUMBER}"
+    if [[ ${PKG_CONFLUENT_VER#v*} =~ ^[0-9]+\.[0-9]+\.[0-9]+$ && ${PKG_KAFKA_VER#v*} =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+      export GIT_DEPLOY_TAG="v${PKG_CONFLUENT_VER#v*}-${PKG_KAFKA_VER#v*}"
+    else
+      export GIT_DEPLOY_TAG="v${PKG_CONFLUENT_VER#v*}-${PKG_KAFKA_VER#v*}-${TRAVIS_BUILD_NUMBER}"
+    fi
     git tag -l | xargs git tag -d
-    git remote add upstream git@github.com:arron-green/cpkafka-schema-registry-artifact-bldr.git
+    git remote add upstream git@github.com:arron-green/cpkafka-artifacts.git
     git push upstream :refs/tags/$GIT_DEPLOY_TAG || echo "remote tag doesnt exist"
-    git tag -fa -m "Release v${PKG_CONFLUENT_VER#v*} ${TRAVIS_BUILD_NUMBER}" "${GIT_DEPLOY_TAG}"
+    # TODO: add meta information about each artifact to release notes
+    git tag -fa -m "Confluent: ${PKG_CONFLUENT_VER#v*} Kafka: ${PKG_KAFKA_VER#v*}" "${GIT_DEPLOY_TAG}"
     git push upstream --tags
 
 branches:
   except:
-    - /^*-v[0-9]/
+    - /^v[0-9].+/
 
 deploy:
   provider: releases
