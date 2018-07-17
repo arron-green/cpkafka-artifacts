@@ -13,3 +13,10 @@ cd "${HOME}/${PKG_NAME}-${PKG_KAFKA_VER#v*}"
 gradle installAll releaseTarGz -x signArchives
 
 tar -czf ${HOME}/pkg-${PKG_NAME}-${COMMIT_SHA}.tgz *
+
+printf '''## %s
+**Version:** %s
+**Commit SHA:** %s
+**Commit Date:** %s
+
+''' "${PKG_NAME}" "${PKG_KAFKA_VER}" "${COMMIT_SHA}" "${COMMIT_DATE}" >> ${HOME}/RELEASE.md

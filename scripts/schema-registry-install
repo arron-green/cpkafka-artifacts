@@ -15,3 +15,10 @@ BUILD_OPTS="-Davro.version=${AVRO_VER} -Dmaven.test.skip=${MAVEN_SKIP_TESTS}"
 mvn ${BUILD_OPTS} -q clean install
 mvn ${BUILD_OPTS} -q package
 tar -czf ${HOME}/pkg-${PKG_NAME}-${COMMIT_SHA}.tgz *
+
+printf '''## %s
+**Version:** %s
+**Commit SHA:** %s
+**Commit Date:** %s
+
+''' "${PKG_NAME}" "${PKG_CONFLUENT_VER}" "${COMMIT_SHA}" "${COMMIT_DATE}" >> ${HOME}/RELEASE.md

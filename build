@@ -42,6 +42,6 @@ docker run --rm -iv${PWD}/build-artifacts:/build-artifacts --user="root" $DOCKER
 cd /home/${DOCKER_BUILD_USER}
 chown -R ${ARTIFACTS_USER} /build-artifacts
 tar -czf /home/${DOCKER_BUILD_USER}/m2-artifact-repo.tgz /home/${DOCKER_BUILD_USER}/.m2
-chown -R "${ARTIFACTS_USER}" *.tgz
-mv *.tgz /build-artifacts
+chown -R "${ARTIFACTS_USER}" RELEASE.md *.tgz
+mv RELEASE.md *.tgz /build-artifacts
 EOF
