@@ -28,6 +28,18 @@ services:
         MAVEN_OPTS: ${MAVEN_OPTS}
         MAVEN_SKIP_TESTS: ${MAVEN_SKIP_TESTS}
     image: arrongreen/cpkafka-artifacts-common:latest
+  support-metrics-common:
+    build:
+      context: support-metrics-common
+      dockerfile: Dockerfile
+      args:
+        PKG_NAME: support-metrics-common
+        PKG_VER: ${PKG_CONFLUENT_VER}
+        AVRO_VER: ${AVRO_VER}
+        KAFKA_VER: ${KAFKA_VER}
+        MAVEN_OPTS: ${MAVEN_OPTS}
+        MAVEN_SKIP_TESTS: ${MAVEN_SKIP_TESTS}
+    image: arrongreen/cpkafka-artifacts-support-metrics-common:latest
   rest-utils:
     build:
       context: rest-utils

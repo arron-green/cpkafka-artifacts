@@ -1,4 +1,4 @@
-from arrongreen/cpkafka-artifacts-support-metrics-common:latest
+from arrongreen/cpkafka-artifacts-common:latest
 
 ARG SDKMAN_DIR=/usr/local/sdkman
 ARG PKG_NAME=
@@ -15,5 +15,5 @@ RUN chown -R kafkabldr:kafkabldr /home/kafkabldr
 USER kafkabldr
 
 # install  from source
-COPY ./install ./rest-utils-install
-RUN ./rest-utils-install
+COPY ./install ./support-metrics-common-install
+RUN ./support-metrics-common-install

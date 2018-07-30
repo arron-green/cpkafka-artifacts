@@ -15,7 +15,7 @@ pull-build-push base
 PKG_NAME=kafka PKG_VER=${PKG_KAFKA_VER} ./kafka/prep
 pull-build-push kafka
 
-for COMPONENT in common rest-utils schema-registry kafka-rest ksql; do
+for COMPONENT in common support-metrics-common rest-utils schema-registry kafka-rest ksql; do
     PKG_NAME=${COMPONENT} PKG_VER=${PKG_CONFLUENT_VER} ./${COMPONENT}/prep
     pull-build-push "${COMPONENT}"
 done
