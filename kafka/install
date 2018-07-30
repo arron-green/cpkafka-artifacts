@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -e
+source ${SDKMAN_DIR}/bin/sdkman-init.sh &> /dev/null
+# PKG_NAME=kafka
+# cd "${HOME}" && (curl -s -L https://github.com/confluentinc/${PKG_NAME}/archive/${PKG_VER}.tar.gz | tar -zx)
+#
+# test -z "$GITHUB_CLIENT_ID" -o -z "$GITHUB_CLIENT_SECRET" || GITHUB_API_PARAMS="?client_id=$GITHUB_CLIENT_ID&client_secret=$GITHUB_CLIENT_SECRET"
+# BRANCH_META=$(curl -s "https://api.github.com/repos/confluentinc/${PKG_NAME}/branches/${PKG_VER}${GITHUB_API_PARAMS}" | jq -r -c '.commit')
+# COMMIT_SHA=$(echo ${BRANCH_META} | jq -r -c '.sha')
+# COMMIT_DATE=$(echo ${BRANCH_META} | jq -r -c '.commit.committer.date')
+
+cd "${HOME}/${PKG_NAME}-${PKG_VER#v*}"
+# gradle installAll releaseTarGz -x signArchives
+gradle -PscalaVersion=${SCALA_VER} installAll -x signArchives
+gradle clean
+
+# tar -czf ${HOME}/pkg-${PKG_NAME}-${COMMIT_SHA}.tgz *
+#
+# printf '''## %s
+# **Version:** %s
+# **Commit SHA:** %s
+# **Commit Date:** %s
+#
+# ''' "${PKG_NAME}" "${PKG_VER}" "${COMMIT_SHA}" "${COMMIT_DATE}" >> ${HOME}/RELEASE.md

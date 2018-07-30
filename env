@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+
+export PKG_KAFKA_VER=${PKG_KAFKA_VER-v5.0.0-rc4}
+export PKG_CONFLUENT_VER=${PKG_CONFLUENT_VER-v5.0.0-rc4}
+export JAVA_VER=${JAVA_VER-8.0.172-zulu}
+export SCALA_VER=${SCALA_VER-2.11}
+export GRADLE_VER=${GRADLE_VER-4.8.1}
+export MAVEN_VER=${MAVEN_VER-3.5.2}
+export AVRO_VER=${AVRO_VER-1.8.2}
+export KAFKA_VER=${KAFKA_VER-2.0.0-cp1}
+export GRADLE_OPTS="${GRADLE_OPTS} -Xmx2048m -Dorg.gradle.logging.level=quiet"
+export MAVEN_OPTS="${MAVEN_OPTS} -Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR -Dlogging.level=ERROR -Dlog4j.configuration=file:/home/kafkabldr/log4j.properties"
+export MAVEN_SKIP_TESTS=${MAVEN_SKIP_TESTS-true}
+export DOCKER_BUILD_USER=kafkabldr

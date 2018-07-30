@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+cd "${HOME}/${PKG_NAME}-${PKG_VER#v*}"
+BUILD_OPTS="-Dkafka.version=${KAFKA_VER} -Davro.version=${AVRO_VER} -Dmaven.test.skip=${MAVEN_SKIP_TESTS}"
+gradle -PscalaVersion=${SCALA_VER} -x signArchives $@

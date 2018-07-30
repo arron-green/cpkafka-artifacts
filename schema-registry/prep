@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ARCHIVE_PATH=${DIR}/${PKG_NAME}.tgz
+[[ -e ${ARCHIVE_PATH} ]] && rm ${ARCHIVE_PATH}
+curl -sLo ${ARCHIVE_PATH} https://github.com/confluentinc/${PKG_NAME}/archive/${PKG_VER}.tar.gz
+tar -tzf ${ARCHIVE_PATH} >/dev/null

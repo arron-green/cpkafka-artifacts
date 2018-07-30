@@ -1,0 +1,80 @@
+---
+version: '3.3'
+services:
+  base:
+    build:
+      context: .
+      dockerfile: base/Dockerfile
+    image: arrongreen/cpkafka-artifacts-base:latest
+  kafka:
+    build:
+      context: kafka
+      dockerfile: Dockerfile
+      args:
+        SCALA_VER: ${SCALA_VER}
+        PKG_VER: ${PKG_KAFKA_VER}
+        PKG_NAME: kafka
+        GRADLE_OPTS: ${GRADLE_OPTS}
+    image: arrongreen/cpkafka-artifacts-kafka:latest
+  common:
+    build:
+      context: common
+      dockerfile: Dockerfile
+      args:
+        PKG_NAME: common
+        PKG_VER: ${PKG_CONFLUENT_VER}
+        AVRO_VER: ${AVRO_VER}
+        KAFKA_VER: ${KAFKA_VER}
+        MAVEN_OPTS: ${MAVEN_OPTS}
+        MAVEN_SKIP_TESTS: ${MAVEN_SKIP_TESTS}
+    image: arrongreen/cpkafka-artifacts-common:latest
+  rest-utils:
+    build:
+      context: rest-utils
+      dockerfile: Dockerfile
+      args:
+        PKG_NAME: rest-utils
+        PKG_VER: ${PKG_CONFLUENT_VER}
+        AVRO_VER: ${AVRO_VER}
+        KAFKA_VER: ${KAFKA_VER}
+        MAVEN_OPTS: ${MAVEN_OPTS}
+        MAVEN_SKIP_TESTS: ${MAVEN_SKIP_TESTS}
+    image: arrongreen/cpkafka-artifacts-restutils:latest
+  schema-registry:
+    build:
+      context: schema-registry
+      dockerfile: Dockerfile
+      args:
+        PKG_NAME: schema-registry
+        PKG_VER: ${PKG_CONFLUENT_VER}
+        AVRO_VER: ${AVRO_VER}
+        KAFKA_VER: ${KAFKA_VER}
+        MAVEN_OPTS: ${MAVEN_OPTS}
+        MAVEN_SKIP_TESTS: ${MAVEN_SKIP_TESTS}
+    image: arrongreen/cpkafka-artifacts-schema-registry:latest
+  kafka-rest:
+    build:
+      context: kafka-rest
+      dockerfile: Dockerfile
+      args:
+        PKG_NAME: kafka-rest
+        PKG_VER: ${PKG_CONFLUENT_VER}
+        AVRO_VER: ${AVRO_VER}
+        KAFKA_VER: ${KAFKA_VER}
+        MAVEN_OPTS: ${MAVEN_OPTS}
+        MAVEN_SKIP_TESTS: ${MAVEN_SKIP_TESTS}
+    image: arrongreen/cpkafka-artifacts-kafka-rest:latest
+  ksql:
+    build:
+      context: ksql
+      dockerfile: Dockerfile
+      args:
+        PKG_NAME: ksql
+        PKG_VER: ${PKG_CONFLUENT_VER}
+        AVRO_VER: ${AVRO_VER}
+        KAFKA_VER: ${KAFKA_VER}
+        MAVEN_OPTS: ${MAVEN_OPTS}
+        MAVEN_SKIP_TESTS: ${MAVEN_SKIP_TESTS}
+    image: arrongreen/cpkafka-artifacts-ksql:latest
+volumes:
+  common:

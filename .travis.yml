@@ -8,9 +8,7 @@ services:
 env:
   global:
     - MAVEN_OPTS: "-Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR -Dlogging.level=ERROR"
-    - GRADLE_OPTS: "-Dorg.gradle.logging.level=quiet"
-    - PKG_KAFKA_VER: 2.0
-    - PKG_CONFLUENT_VER: 5.0.x
+    - GRADLE_OPTS: "-Xmx2048m -Dorg.gradle.logging.level=quiet"
 
 before_install:
   - |
@@ -28,6 +26,7 @@ before_install:
 
 before_script:
   - |
+    docker login --username=$DOCKER_LOGIN --password=$DOCKER_PASSWORD
     echo "cleaning up previous artifacts"
     while read PREV_ART; do
       echo "removing ${PREV_ART}"

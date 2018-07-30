@@ -1,47 +1,36 @@
 #!/usr/bin/env bash
-set -ex
-DOCKER_TAG=arrongreen/cpkafka-artifacts:latest
+set -e
 
-PKG_KAFKA_VER=${PKG_KAFKA_VER-2.0}
-PKG_CONFLUENT_VER=${PKG_CONFLUENT_VER-5.0.x}
+source ./env
 
-JAVA_VER=${JAVA_VER-8.0.171-oracle}
-SCALA_VER=${SCALA_VER-2.11}
-GRADLE_VER=${GRADLE_VER-4.8.1}
-MAVEN_VER=${MAVEN_VER-3.5.2}
-AVRO_VER=${AVRO_VER-1.8.2}
-GRADLE_OPTS=${GRADLE_OPTS--Xmx2048m}
-MAVEN_OPTS=${MAVEN_OPTS}
-DOCKER_BUILD_USER=kafkabldr
+function pull-build-push {
+    local ARG=$1
+    docker-compose pull ${ARG} || echo "failed to pull '${ARG}'"
+    docker-compose build ${ARG}
+    docker-compose push ${ARG} || echo "failed to push '${ARG}'"
+}
 
-if [[ ! -e artifacts.tgz ]]; then
-    curl -s -L -o artifacts.tgz https://github.com/arron-green/cpkafka-artifacts/releases/download/v5.0.0-beta/m2-artifact-repo.tgz
-fi
+pull-build-push base
 
-docker build \
-    --build-arg JAVA_VER="${JAVA_VER}" \
-    --build-arg SCALA_VER="${SCALA_VER}" \
-    --build-arg GRADLE_VER="${GRADLE_VER}" \
-    --build-arg MAVEN_VER="${MAVEN_VER}" \
-    --build-arg PKG_CONFLUENT_VER="${PKG_CONFLUENT_VER}" \
-    --build-arg PKG_KAFKA_VER="${PKG_KAFKA_VER}" \
-    --build-arg AVRO_VER="${AVRO_VER}" \
-    --build-arg MAVEN_OPTS="${MAVEN_OPTS}" \
-    --build-arg GRADLE_OPTS="${GRADLE_OPTS}" \
-    --build-arg GITHUB_CLIENT_ID="${GITHUB_CLIENT_ID}" \
-    --build-arg GITHUB_CLIENT_SECRET="${GITHUB_CLIENT_SECRET}" \
-    -t $DOCKER_TAG .
+PKG_NAME=kafka PKG_VER=${PKG_KAFKA_VER} ./kafka/prep
+pull-build-push kafka
 
-case "$(uname -s)" in
-    Darwin*)    ARTIFACTS_USER=$(stat -f "%u:%g" ./build-artifacts);;
-    *)          ARTIFACTS_USER=$(stat -c "%u:%g" ./build-artifacts);;
-esac
+for COMPONENT in common rest-utils schema-registry kafka-rest ksql; do
+    PKG_NAME=${COMPONENT} PKG_VER=${PKG_CONFLUENT_VER} ./${COMPONENT}/prep
+    pull-build-push "${COMPONENT}"
+done
 
-# copy build artifacts from container to host
-docker run --rm -iv${PWD}/build-artifacts:/build-artifacts --user="root" $DOCKER_TAG bash -s <<EOF
-cd /home/${DOCKER_BUILD_USER}
-chown -R ${ARTIFACTS_USER} /build-artifacts
-tar -czf /home/${DOCKER_BUILD_USER}/m2-artifact-repo.tgz /home/${DOCKER_BUILD_USER}/.m2
-chown -R "${ARTIFACTS_USER}" RELEASE.md *.tgz
-mv RELEASE.md *.tgz /build-artifacts
-EOF
+# TODO: finish me
+# case "$(uname -s)" in
+#     Darwin*)    ARTIFACTS_USER=$(stat -f "%u:%g" ./build-artifacts);;
+#     *)          ARTIFACTS_USER=$(stat -c "%u:%g" ./build-artifacts);;
+# esac
+#
+# # copy build artifacts from container to host
+# docker run --rm -iv${PWD}/build-artifacts:/build-artifacts --user="root" $DOCKER_TAG bash -s <<EOF
+# cd /home/${DOCKER_BUILD_USER}
+# chown -R ${ARTIFACTS_USER} /build-artifacts
+# tar -czf /home/${DOCKER_BUILD_USER}/m2-artifact-repo.tgz /home/${DOCKER_BUILD_USER}/.m2
+# chown -R "${ARTIFACTS_USER}" RELEASE.md *.tgz
+# mv RELEASE.md *.tgz /build-artifacts
+# EOF

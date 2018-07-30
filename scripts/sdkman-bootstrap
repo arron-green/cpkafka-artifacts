@@ -1,9 +1,30 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 
-apt-get -qq -y update
-apt-get -qq -y install git curl zip unzip tar jq
+export DEBIAN_FRONTEND=noninteractive
+
+apt-get -qq -y update \
+    && apt-get -qq -y install \
+        git \
+        curl \
+        zip \
+        unzip \
+        tar \
+        jq \
+    && rm -rf /var/lib/apt/lists/*
+
 (curl -s "https://get.sdkman.io" | bash) &> /dev/null
 echo "sdkman_auto_answer=true" > ${SDKMAN_DIR}/etc/config
 echo "sdkman_auto_selfupdate=false" >> ${SDKMAN_DIR}/etc/config
 echo "sdkman_insecure_ssl=false" >> ${SDKMAN_DIR}/etc/config
+
+source ${SDKMAN_DIR}/bin/sdkman-init.sh &> /dev/null
+
+for PKG in java gradle maven; do
+    PKG_VER_ENV_KEY=$(printf "%s_VER" "$(echo ${PKG} | tr a-z A-Z)")
+    PKG_VER="$(printenv "${PKG_VER_ENV_KEY}")"
+    sdk install "${PKG}" "${PKG_VER}" &> /dev/null
+done
+
+sdk flush temp
+sdk flush archives

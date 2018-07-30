@@ -1,9 +1,3 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 source ${SDKMAN_DIR}/bin/sdkman-init.sh &> /dev/null
-
-for PKG in java gradle maven; do
-    PKG_VER_ENV_KEY=$(printf "%s_VER" "$(echo ${PKG} | tr a-z A-Z)")
-    PKG_VER="$(printenv "${PKG_VER_ENV_KEY}")"
-    sdk install "${PKG}" "${PKG_VER}" &> /dev/null
-done
